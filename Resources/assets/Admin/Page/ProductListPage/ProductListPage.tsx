@@ -9,7 +9,7 @@ import DataGridComponent from "@EveryWorkflow/DataGridBundle/Component/DataGridC
 import {DATA_GRID_TYPE_PAGE} from "@EveryWorkflow/DataGridBundle/Component/DataGridComponent/DataGridComponent";
 import {useHistory} from "react-router-dom";
 
-const CustomerListPage = () => {
+const ProductListPage = () => {
     const {dispatch: panelDispatch} = useContext(PanelContext);
     const history = useHistory();
 
@@ -27,4 +27,4 @@ const CustomerListPage = () => {
     );
 };
 
-export default CustomerListPage;
+export default ProductListPage;

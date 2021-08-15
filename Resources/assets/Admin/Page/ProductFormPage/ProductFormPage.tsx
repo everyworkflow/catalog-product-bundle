@@ -21,7 +21,7 @@ import {ALERT_TYPE_ERROR, ALERT_TYPE_SUCCESS} from "@EveryWorkflow/CoreBundle/Ac
 const SUBMIT_SAVE_CHANGES = 'save_changes';
 const SUBMIT_SAVE_CHANGES_AND_CONTINUE = 'save_changes_and_continue';
 
-const ProductListPage = () => {
+const ProductFormPage = () => {
     const {dispatch: panelDispatch} = useContext(PanelContext);
     const {uuid = ''}: { uuid: string } = useParams();
     const history = useHistory();
@@ -142,4 +142,4 @@ const ProductListPage = () => {
     );
 };
 
-export default ProductListPage;
+export default ProductFormPage;

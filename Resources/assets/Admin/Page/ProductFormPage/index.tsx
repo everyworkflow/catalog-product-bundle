@@ -2,6 +2,6 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import ProductListPage from "./ProductListPage";
+import ProductFormPage from "./ProductFormPage";
 
-export default ProductListPage;
+export default ProductFormPage;

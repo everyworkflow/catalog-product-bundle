@@ -34,14 +34,13 @@ class Mongo_2021_01_05_00_00_00_CatalogProduct_Migration implements MigrationInt
     public function migrate(): bool
     {
         /** @var EntityDocument $productEntity */
-        $productEntity = $this->entityRepository->getDocumentFactory()
-            ->create(EntityDocument::class);
+        $productEntity = $this->entityRepository->create();
         $productEntity
             ->setName('Catalog product')
             ->setCode($this->catalogProductRepository->getEntityCode())
             ->setClass(CatalogProductEntity::class)
             ->setStatus(CatalogProductEntity::STATUS_ENABLE);
-        $this->entityRepository->save($productEntity);
+        $this->entityRepository->saveOne($productEntity);
 
         $attributeData = [
             [
@@ -66,13 +65,12 @@ class Mongo_2021_01_05_00_00_00_CatalogProduct_Migration implements MigrationInt
         foreach ($attributeData as $item) {
             $item['entity_code'] = $this->catalogProductRepository->getEntityCode();
             $item['sort_order'] = $sortOrder++;
-            $attribute = $this->attributeRepository->getDocumentFactory()
-                ->createAttribute($item);
-            $this->attributeRepository->save($attribute);
+            $attribute = $this->attributeRepository->create($item);
+            $this->attributeRepository->saveOne($attribute);
         }
 
         $indexKeys = [];
-        foreach ($this->catalogProductRepository->getIndexNames() as $key) {
+        foreach ($this->catalogProductRepository->getIndexKeys() as $key) {
             $indexKeys[$key] = 1;
         }
         $this->catalogProductRepository->getCollection()

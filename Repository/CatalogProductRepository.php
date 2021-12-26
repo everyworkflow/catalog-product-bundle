@@ -8,16 +8,16 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\CatalogProductBundle\Repository;
 
-use EveryWorkflow\CoreBundle\Annotation\RepoDocument;
 use EveryWorkflow\CatalogProductBundle\Entity\CatalogProductEntity;
 use EveryWorkflow\EavBundle\Repository\BaseEntityRepository;
+use EveryWorkflow\EavBundle\Support\Attribute\EntityRepositoryAttribute;
 
-/**
- * @RepoDocument(doc_name=CatalogProductEntity::class)
- */
+#[EntityRepositoryAttribute(
+    documentClass: CatalogProductEntity::class,
+    primaryKey: 'sku',
+    entityCode: 'catalog_product'
+)]
 class CatalogProductRepository extends BaseEntityRepository implements CatalogProductRepositoryInterface
 {
-    protected string $collectionName = 'catalog_product_entity_collection';
-    protected array $indexNames = ['sku'];
-    protected string $entityCode = 'catalog_product';
+    // Something
 }

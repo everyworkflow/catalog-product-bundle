@@ -6,13 +6,12 @@
 
 declare(strict_types=1);
 
-namespace EveryWorkflow\CatalogProductBundle\Controller\Admin;
+namespace EveryWorkflow\CatalogProductBundle\Controller;
 
 use EveryWorkflow\CatalogProductBundle\Repository\CatalogProductRepositoryInterface;
-use EveryWorkflow\CoreBundle\Annotation\EWFRoute;
+use EveryWorkflow\CoreBundle\Annotation\EwRoute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class GetProductController extends AbstractController
 {
@@ -23,16 +22,22 @@ class GetProductController extends AbstractController
         $this->catalogProductRepository = $catalogProductRepository;
     }
 
-    /**
-     * @EWFRoute(
-     *     admin_api_path="catalog/product/{uuid}",
-     *     defaults={"uuid"="create"},
-     *     name="admin.catalog.product.view",
-     *     methods="GET"
-     * )
-     * @throws \Exception
-     */
-    public function __invoke(string $uuid, Request $request): JsonResponse
+    #[EwRoute(
+        path: "catalog/product/{uuid}",
+        name: 'catalog.product.view',
+        methods: 'GET',
+        permissions: 'catalog.product.view',
+        swagger: [
+            'parameters' => [
+                [
+                    'name' => 'uuid',
+                    'in' => 'path',
+                    'default' => 'create',
+                ]
+            ]
+        ]
+    )]
+    public function __invoke(string $uuid = 'create'): JsonResponse
     {
         $data = [];
 
@@ -45,6 +50,6 @@ class GetProductController extends AbstractController
 
         $data['data_form'] = $this->catalogProductRepository->getForm()->toArray();
 
-        return (new JsonResponse())->setData($data);
+        return new JsonResponse($data);
     }
 }

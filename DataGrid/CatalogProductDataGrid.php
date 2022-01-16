@@ -12,11 +12,13 @@ use EveryWorkflow\CatalogProductBundle\Repository\CatalogProductRepositoryInterf
 use EveryWorkflow\CoreBundle\Model\DataObjectFactoryInterface;
 use EveryWorkflow\CoreBundle\Model\DataObjectInterface;
 use EveryWorkflow\DataFormBundle\Model\FormInterface;
+use EveryWorkflow\DataGridBundle\BulkAction\ButtonBulkAction;
 use EveryWorkflow\DataGridBundle\Factory\ActionFactoryInterface;
-use EveryWorkflow\DataGridBundle\Model\Action\ButtonAction;
+use EveryWorkflow\DataGridBundle\HeaderAction\ButtonHeaderAction;
 use EveryWorkflow\DataGridBundle\Model\Collection\ArraySourceInterface;
 use EveryWorkflow\DataGridBundle\Model\DataGrid;
 use EveryWorkflow\DataGridBundle\Model\DataGridConfigInterface;
+use EveryWorkflow\DataGridBundle\RowAction\ButtonRowAction;
 
 class CatalogProductDataGrid extends DataGrid implements CatalogProductDataGridInterface
 {
@@ -62,31 +64,42 @@ class CatalogProductDataGrid extends DataGrid implements CatalogProductDataGridI
             ->setFilterableColumns($allColumns);
 
         $config->setHeaderActions([
-            $this->actionFactory->create(ButtonAction::class, [
-                'path' => '/catalog/product/create',
-                'label' => 'Create new',
+            $this->actionFactory->create(ButtonHeaderAction::class, [
+                'button_path' => '/catalog/product/create',
+                'button_label' => 'Create new',
+                'button_type' => 'primary',
             ]),
         ]);
 
         $config->setRowActions([
-            $this->actionFactory->create(ButtonAction::class, [
-                'path' => '/catalog/product/{_id}/edit',
-                'label' => 'Edit',
+            $this->actionFactory->create(ButtonRowAction::class, [
+                'button_path' => '/catalog/product/{_id}/edit',
+                'button_label' => 'Edit',
+                'button_type' => 'primary',
             ]),
-            $this->actionFactory->create(ButtonAction::class, [
-                'path' => '/catalog/product/{_id}/delete',
-                'label' => 'Delete',
+            $this->actionFactory->create(ButtonRowAction::class, [
+                'button_path' => '/catalog/product/{_id}',
+                'button_label' => 'Delete',
+                'button_type' => 'primary',
+                'path_type' => ButtonRowAction::PATH_TYPE_DELETE_CALL,
+                'is_danger' => true,
+                'is_confirm' => true,
+                'confirm_message' => 'Are you sure, you want to delete this item?',
             ]),
         ]);
 
         $config->setBulkActions([
-            $this->actionFactory->create(ButtonAction::class, [
-                'path' => '/catalog/product/enable/{_id}',
-                'label' => 'Enable',
+            $this->actionFactory->create(ButtonBulkAction::class, [
+                'button_label' => 'Enable',
+                'button_path' => '/catalog/product/bulk-action/enable',
+                'button_type' => 'default',
+                'path_type' => ButtonBulkAction::PATH_TYPE_POST_CALL,
             ]),
-            $this->actionFactory->create(ButtonAction::class, [
-                'path' => '/catalog/product/disable/{_id}',
-                'label' => 'Disable',
+            $this->actionFactory->create(ButtonBulkAction::class, [
+                'button_label' => 'Disable',
+                'button_path' => '/catalog/product/bulk-action/disable',
+                'button_type' => 'default',
+                'path_type' => ButtonBulkAction::PATH_TYPE_POST_CALL,
             ]),
         ]);
 
